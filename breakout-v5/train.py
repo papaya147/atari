@@ -10,6 +10,7 @@ from device import device
 import random
 import wandb
 import checkpoint
+import time
 
 # * hyper params
 learning_rate = 0.0001
@@ -112,6 +113,8 @@ run_id = run.id
 loss = '-'
 
 for e in range(episode, n_episodes):
+    start_time = time.time()
+
     epsilon = max(epsilon_min, 1.0 - (total_steps / epsilon_decay_steps) * (1.0 - epsilon_min))
 
     total_reward = 0
@@ -180,3 +183,6 @@ for e in range(episode, n_episodes):
     }
 
     checkpoint.new(checkpoint_dir, e, model_state)
+
+    end_time = time.time()
+    print(f'Episode {e}/{n_episodes}: {((end_time - start_time) / 60):2f} minutes')
